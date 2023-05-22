@@ -1,0 +1,31 @@
+package com.laba.solvd.enums;
+
+public enum DeptName {
+    ANESTHESIOLOGY("ANESTHESIOLOGY"),
+    CARDIOLOGY("CARDIOLOGY"),
+    DENTISTRY("DENTISTRY"),
+    DERMATOLOGY("DERMATOLOGY"),
+    ENDOCRINOLOGY("ENDOCRINOLOGY"),
+    FAMILY_MEDICINE("FAMILY MEDICINE"),
+    GASTROENTEROLOGY("GASTROENTEROLOGY"),
+    INFECTIOUS_DISEASE("INFECTIOUS DISEASE"),
+    NEUROLOGY("NEUROLOGY"),
+    NEUROSURGERY("NEUROSURGERY"),
+    OPHTHALMOLOGY("OPHTHALMOLOGY"),
+    ORTHOPAEDICS("ORTHOPAEDICS"),
+    PRIMARY_CARE("PRIMARY CARE"),
+    PSYCHOLOGY("PSYCHOLOGY"),
+    RADIOLOGY("RADIOLOGY"),
+    RHEUMATOLOGY("RHEUMATOLOGY"),
+    UROLOGY("UROLOGY");
+
+    private final String label;
+
+    DeptName(String label) {
+        this.label = label;
+    }
+
+    public String getLabel() {
+        return label;
+    }
+}
