@@ -1,4 +1,4 @@
-package com.laba.solvd.tools;
+package com.laba.solvd.tool;
 
 import com.laba.solvd.enums.Gender;
 import com.laba.solvd.hospital.patient.Patient;
@@ -13,7 +13,6 @@ import java.util.List;
 public class Reflection {
     public static void reflection() {
         try {
-
             Patient myPatient = new Patient("Eric Adams", LocalDate.parse("1995-07-04"), Gender.MALE);
 
             Class patient = myPatient.getClass();

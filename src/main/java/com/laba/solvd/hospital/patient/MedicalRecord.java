@@ -1,9 +1,8 @@
 package com.laba.solvd.hospital.patient;
 
-import com.laba.solvd.enums.*;
 import com.laba.solvd.exception.*;
 import com.laba.solvd.interfaces.*;
-import com.laba.solvd.tools.StringManipulation;
+import com.laba.solvd.tool.StringManipulation;
 
 import java.util.ArrayList;
 import java.util.InputMismatchException;

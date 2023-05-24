@@ -5,7 +5,7 @@ import com.laba.solvd.enums.Gender;
 import com.laba.solvd.enums.JobTitle;
 import com.laba.solvd.exception.*;
 import com.laba.solvd.interfaces.*;
-import com.laba.solvd.tools.StringManipulation;
+import com.laba.solvd.tool.StringManipulation;
 
 import java.text.NumberFormat;
 import java.time.LocalDate;

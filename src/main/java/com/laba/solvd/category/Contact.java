@@ -2,7 +2,7 @@ package com.laba.solvd.category;
 
 import com.laba.solvd.exception.*;
 import com.laba.solvd.interfaces.*;
-import com.laba.solvd.tools.StringManipulation;
+import com.laba.solvd.tool.StringManipulation;
 
 import java.util.Objects;
 import java.util.Scanner;

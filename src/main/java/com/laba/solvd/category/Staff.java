@@ -5,7 +5,7 @@ import com.laba.solvd.enums.JobTitle;
 import com.laba.solvd.exception.InvalidDateException;
 import com.laba.solvd.exception.NullDataException;
 import com.laba.solvd.interfaces.Information;
-import com.laba.solvd.tools.StringManipulation;
+import com.laba.solvd.tool.StringManipulation;
 
 import java.time.LocalDate;
 import java.util.Objects;

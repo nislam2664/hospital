@@ -1,22 +1,21 @@
 package com.laba.solvd;
 
-import com.laba.solvd.category.Room;
-import com.laba.solvd.category.Staff;
+import com.laba.solvd.category.*;
 import com.laba.solvd.enums.*;
 import com.laba.solvd.hospital.*;
 import com.laba.solvd.hospital.patient.*;
 import com.laba.solvd.hospital.room.*;
 import com.laba.solvd.hospital.staff.*;
-import com.laba.solvd.tools.*;
+import com.laba.solvd.tool.*;
 
+import com.sun.jdi.connect.spi.Connection;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import javax.print.Doc;
+import java.sql.DriverManager;
 import java.text.NumberFormat;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.List;
 import java.util.function.*;
 
 public class Main {
@@ -35,7 +34,7 @@ public class Main {
         Reflection.reflection();
 
         // FILE AND STRING UTILS PRACTICE
-       /* FileReader.fileReader();
+        FileReader.fileReader();
 
         // HOSPITAL SIMULATION
         Hospital hospital = new Hospital("Green Hill Hospital", "106-05 Pennsylvania Ave., Franklin Square, NY 11010","347-445-3124");
@@ -145,6 +144,6 @@ public class Main {
         dept.groupPatientByAgeGroup().keySet().stream().forEach(ageGroup -> {
             System.out.println(ageGroup + ": ");
             dept.groupPatientByAgeGroup().get(ageGroup).stream().forEach(printPatient);
-        });*/
+        });
     }
 }

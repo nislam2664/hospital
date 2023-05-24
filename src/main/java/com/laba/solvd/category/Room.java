@@ -2,7 +2,7 @@ package com.laba.solvd.category;
 
 import com.laba.solvd.exception.NegativeNumberException;
 import com.laba.solvd.interfaces.Information;
-import com.laba.solvd.tools.StringManipulation;
+import com.laba.solvd.tool.StringManipulation;
 
 import java.util.InputMismatchException;
 import java.util.Objects;

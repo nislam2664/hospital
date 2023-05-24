@@ -4,7 +4,7 @@ import com.laba.solvd.enums.AgeGroup;
 import com.laba.solvd.enums.Gender;
 import com.laba.solvd.exception.*;
 import com.laba.solvd.interfaces.*;
-import com.laba.solvd.tools.StringManipulation;
+import com.laba.solvd.tool.StringManipulation;
 
 import java.time.LocalDate;
 import java.time.Period;

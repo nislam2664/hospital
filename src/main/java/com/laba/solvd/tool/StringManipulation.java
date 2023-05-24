@@ -1,4 +1,4 @@
-package com.laba.solvd.tools;
+package com.laba.solvd.tool;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
