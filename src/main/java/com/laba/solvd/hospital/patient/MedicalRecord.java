@@ -3,6 +3,8 @@ package com.laba.solvd.hospital.patient;
 import com.laba.solvd.exception.*;
 import com.laba.solvd.interfaces.*;
 import com.laba.solvd.tool.StringManipulation;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.InputMismatchException;
@@ -10,6 +12,8 @@ import java.util.Objects;
 import java.util.Scanner;
 
 public final class MedicalRecord implements Information {
+    public static final Logger logger = LogManager.getLogger(MedicalRecord.class.getName());
+
     public static String system = "IMPERIAL";
     private double height;
     private double weight;
@@ -18,14 +22,17 @@ public final class MedicalRecord implements Information {
     private final ArrayList<String> diagnosisList =  new ArrayList<>();
 
     public MedicalRecord() {
-
+        logger.debug("Medical record object instantiated");
+        logger.warn("Medical record was not given any information");
     }
 
     public MedicalRecord(double height, double weight, String bloodPressure, double temperature) {
+        logger.debug("Medical record object instantiated");
         this.height = height;
         this.weight = weight;
         this.bloodPressure = bloodPressure;
         setTemperature(temperature);
+        logger.info("Medical record object created");
     }
 
     public double getHeight() {
@@ -54,8 +61,10 @@ public final class MedicalRecord implements Information {
             if (height <= 0)
                 throw new NegativeNumberException();
             this.height = height;
+            logger.info("Height successfully provided");
         }
         catch (NegativeNumberException e) {
+            logger.warn("Height cannot be negative");
             System.out.print("Height cannot be negative.\nPlease enter a valid height : ");
             while(true) {
                 try {
@@ -65,14 +74,18 @@ public final class MedicalRecord implements Information {
                     if (Double.parseDouble(num) <= 0)
                         throw new NegativeNumberException();
                     this.height = Double.parseDouble(num);
+                    logger.info("Height successfully provided");
                     break;
                 } catch (NegativeNumberException ex) {
+                    logger.warn("Height cannot be negative");
                     System.out.print("Height cannot be negative.\nPlease enter a valid height : ");
                 } catch (InputMismatchException ex) {
+                    logger.warn("Invalid height");
                     System.out.print("Invalid height.\nPlease enter a valid height : ");
                 }
             }
         } catch (InputMismatchException e) {
+            logger.warn("Invalid height");
             System.out.print("Invalid height.\nPlease enter a valid height : ");
             while(true) {
                 try {
@@ -82,10 +95,13 @@ public final class MedicalRecord implements Information {
                     if (Double.parseDouble(num) <= 0)
                         throw new NegativeNumberException();
                     this.height = Double.parseDouble(num);
+                    logger.info("Height successfully provided");
                     break;
                 } catch (NegativeNumberException ex) {
+                    logger.warn("Height cannot be negative");
                     System.out.print("Height cannot be negative.\nPlease enter a valid height : ");
                 } catch (InputMismatchException ex) {
+                    logger.warn("Invalid height");
                     System.out.print("Invalid height.\nPlease enter a valid height : ");
                 }
             }
@@ -98,8 +114,10 @@ public final class MedicalRecord implements Information {
             if (weight <= 0)
                 throw new NegativeNumberException();
             this.weight = weight;
+            logger.info("Weight successfully provided");
         }
         catch (NegativeNumberException e) {
+            logger.warn("Weight cannot be negative");
             System.out.print("Weight cannot be negative.\nPlease enter a valid weight : ");
             while(true) {
                 try {
@@ -109,14 +127,18 @@ public final class MedicalRecord implements Information {
                     if (Double.parseDouble(num) <= 0)
                         throw new NegativeNumberException();
                     this.weight = Double.parseDouble(num);
+                    logger.info("Weight successfully provided");
                     break;
                 } catch (NegativeNumberException ex) {
+                    logger.warn("Weight cannot be negative");
                     System.out.print("Weight cannot be negative.\nPlease enter a valid weight : ");
                 } catch (InputMismatchException ex) {
+                    logger.warn("Invalid weight");
                     System.out.print("Invalid weight.\nPlease enter a valid weight : ");
                 }
             }
         } catch (InputMismatchException e) {
+            logger.warn("Invalid weight");
             System.out.print("Invalid weight.\nPlease enter a valid weight : ");
             while(true) {
                 try {
@@ -126,10 +148,13 @@ public final class MedicalRecord implements Information {
                     if (Double.parseDouble(num) <= 0)
                         throw new NegativeNumberException();
                     this.weight = Double.parseDouble(num);
+                    logger.info("Weight successfully provided");
                     break;
                 } catch (NegativeNumberException ex) {
+                    logger.warn("Weight cannot be negative");
                     System.out.print("Weight cannot be negative.\nPlease enter a valid weight : ");
                 } catch (InputMismatchException ex) {
+                    logger.warn("Invalid weight");
                     System.out.print("Invalid weight.\nPlease enter a valid weight : ");
                 }
             }
@@ -141,9 +166,10 @@ public final class MedicalRecord implements Information {
             if(bloodPressure == null || bloodPressure.isBlank())
                 throw new NullDataException();
         } catch (NullDataException e) {
+            logger.warn("Blood pressure was not provided");
             System.out.println("Blood pressure is unknown. Please input a blood pressure reading.");
         }
-
+        logger.info("Blood pressure successfully provided");
         this.bloodPressure = bloodPressure;
     }
 
@@ -153,8 +179,10 @@ public final class MedicalRecord implements Information {
             if (temperature <= 0)
                 throw new NegativeNumberException();
             this.temperature = temperature;
+            logger.info("Temperature successfully provided");
         }
         catch (NegativeNumberException e) {
+            logger.warn("Temperature cannot be negative");
             System.out.print("Temperature is way below normal range.\nEnter a valid temperature : ");
             while(true) {
                 try {
@@ -164,10 +192,13 @@ public final class MedicalRecord implements Information {
                     if (Double.parseDouble(num) <= 0)
                         throw new NegativeNumberException();
                     this.temperature = Double.parseDouble(num);
+                    logger.info("Temperature successfully provided");
                     break;
                 } catch (NegativeNumberException ex) {
+                    logger.warn("Temperature cannot be negative");
                     System.out.print("Temperature is way below normal range.\nEnter a valid temperature : ");
                 } catch (InputMismatchException ex) {
+                    logger.warn("Invalid temperature");
                     System.out.print("Invalid temperature.\nPlease enter a valid temperature : ");
                 }
             }
@@ -181,10 +212,13 @@ public final class MedicalRecord implements Information {
                     if (Double.parseDouble(num) <= 0)
                         throw new NegativeNumberException();
                     this.temperature = Double.parseDouble(num);
+                    logger.info("Temperature successfully provided");
                     break;
                 } catch (NegativeNumberException ex) {
+                    logger.warn("Temperature cannot be negative");
                     System.out.print("Temperature is way below normal range.\nEnter a valid temperature : ");
                 } catch (InputMismatchException ex) {
+                    logger.warn("Invalid temperature");
                     System.out.print("Invalid temperature.\nPlease enter a valid temperature : ");
                 }
             }
@@ -193,6 +227,7 @@ public final class MedicalRecord implements Information {
 
     public void addDiagnosis(String diagnosis) {
         diagnosisList.add(diagnosis.toLowerCase());
+        logger.info("Diagnosis added");
     }
 
     public static double inchToMeter(double in) {
@@ -224,6 +259,7 @@ public final class MedicalRecord implements Information {
         height = meterToInch(height);
         weight = kgToLB(weight);
         temperature = celsiusToFahrenheit(temperature);
+        logger.info("Medical record shifted from Metric to Imperial");
     }
 
     public void imperialToMetric() {
@@ -231,6 +267,7 @@ public final class MedicalRecord implements Information {
         height = inchToMeter(height);
         weight = lbToKG(weight);
         temperature = fahrenheitToCelsius(temperature);
+        logger.info("Medical record shifted from Imperial to Metric");
     }
 
     @Override

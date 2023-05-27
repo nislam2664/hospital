@@ -8,11 +8,9 @@ import com.laba.solvd.hospital.room.*;
 import com.laba.solvd.hospital.staff.*;
 import com.laba.solvd.tool.*;
 
-import com.sun.jdi.connect.spi.Connection;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.sql.DriverManager;
 import java.text.NumberFormat;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -28,7 +26,6 @@ public class Main {
         logger.fatal("Fatal code! Fatal code!");
         logger.debug("Currently debugging...");
         logger.warn("This is a warning.");
-        System.out.println();
 
         // REFLECTION
         Reflection.reflection();
@@ -37,7 +34,7 @@ public class Main {
         FileReader.fileReader();
 
         // HOSPITAL SIMULATION
-        Hospital hospital = new Hospital("Green Hill Hospital", "106-05 Pennsylvania Ave., Franklin Square, NY 11010","347-445-3124");
+        Hospital hospital = new Hospital("Green Hill Hospital", "106-05 Pennsylvania Ave., Franklin Square, NY 11010", "347-445-3124");
 
         Department dept = new Department(DeptName.RADIOLOGY, 12345678);
         hospital.addDepartment(dept);
@@ -45,7 +42,7 @@ public class Main {
         hospital.addDepartment(dept2);
         hospital.getInfo();
 
-        EmergencyRoom emergencyRoom = new EmergencyRoom(9,  9);
+        EmergencyRoom emergencyRoom = new EmergencyRoom(9, 9);
         dept.addRoom(emergencyRoom);
         emergencyRoom.getInfo();
 
@@ -60,11 +57,11 @@ public class Main {
         d3.getInfo();
 
         Nurse n1 = new Nurse("Hannah Montana", LocalDate.parse("1990-06-13"), Gender.FEMALE, LocalDate.now());
-        n1.addPatient(new Patient("Miranda Govenchi", LocalDate.parse("2019-02-23"), Gender.FEMALE));
+      //  n1.addPatient(new Patient("Miranda Govenchi", LocalDate.parse("2019-02-23"), Gender.FEMALE));
         n1.getInfo();
         System.out.println(n1.getDOB());
         Nurse n2 = new Nurse("Pippi Longstocking", LocalDate.parse("1990-06-13"), Gender.FEMALE, LocalDate.now());
-        n2.addPatient(new Patient("Toby MacGuire", LocalDate.parse("1990-06-13"), Gender.MALE));
+      //  n2.addPatient(new Patient("Toby MacGuire", LocalDate.parse("1990-06-13"), Gender.MALE));
         n2.getInfo();
 
         Interpreter i1 = new Interpreter("John Doe", LocalDate.parse("1990-06-13"), Gender.MALE, LocalDate.now());
@@ -83,7 +80,7 @@ public class Main {
         Visitor v1 = new Visitor("Ginny Miller", LocalDate.parse("1990-06-13"), Relation.DAUGHTER);
         v1.getInfo();
         Visitor v2 = new Visitor("Austin Miller", LocalDate.parse("1990-06-13"), Relation.SON);
-        Visitor v3 = new Visitor("Paul Hollace", LocalDate.parse("1990-06-13") , Relation.BOYFRIEND);
+        Visitor v3 = new Visitor("Paul Hollace", LocalDate.parse("1990-06-13"), Relation.BOYFRIEND);
         p1.addVisitor(v1);
         p1.addVisitor(v2);
         p1.addVisitor(v3);
@@ -98,17 +95,25 @@ public class Main {
 
         dept.addStaff(d1);
         dept.addStaff(d2);
-        dept.addStaff(d3);
+        dept2.addStaff(d3);
         dept.addStaff(n1);
         dept.addStaff(n2);
         dept.addStaff(i1);
         dept.addPatient(p1);
         dept.addPatient(p2);
+        System.out.println("patients -> " + Patient.patients + "\nstaff ->" + Staff.employees);
+
         dept.getInfo();
 
         System.out.println("Dept 1 total population :: " + dept.totalResidents());
         System.out.println("Dept 1 # of Doctors :: " + dept.numOfStaff("Doctor"));
+        System.out.println("Dept 1 # of Doctors :: " + dept.numOfStaff(JobTitle.DOCTOR));
+        System.out.println("Dept 1 # of Nurses :: " + dept.numOfStaff("Nurse"));
+        System.out.println("Dept 1 # of Nurses :: " + dept.numOfStaff(JobTitle.NURSE));
+        System.out.println("Dept 1 # of Interpreters :: " + dept.numOfStaff("Interpreter"));
+        System.out.println("Dept 1 # of Interpreters :: " + dept.numOfStaff(JobTitle.INTERPRETER));
         System.out.println("Dept 2 total population :: " + dept2.totalResidents());
+        System.out.println("Hospital total doctors :: " + hospital.numOfStaff("doctor"));
         System.out.println("Hospital total population :: " + hospital.totalResidents());
 
         dept.getInfo();

@@ -5,6 +5,8 @@ import com.laba.solvd.enums.*;
 import com.laba.solvd.exception.*;
 import com.laba.solvd.interfaces.*;
 import com.laba.solvd.tool.StringManipulation;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -13,6 +15,8 @@ import java.util.Objects;
 import java.util.Scanner;
 
 public final class Patient extends Person implements Information {
+    private static final Logger logger = LogManager.getLogger(Patient.class.getName());
+
     private final int MAX_VISITORS = 2;
     private LocalDate dateOfAdmission;
     private LocalTime timeOfAdmission;
@@ -23,12 +27,16 @@ public final class Patient extends Person implements Information {
 
     static {
         patients = 0;
+        logger.debug("Patient object instantiated");
+        logger.warn("Patient was not given any information");
     }
 
     public Patient(String fullName, LocalDate DOB, Gender gender) {
         super(fullName, DOB, gender);
+        logger.debug("Patient object instantiated");
         this.dateOfAdmission = LocalDate.now();
         patients++;
+        logger.info("Patient object created");
     }
 
     public LocalDate getDateOfAdmission() {
@@ -59,7 +67,9 @@ public final class Patient extends Person implements Information {
             if (dateOfAdmission.isAfter(LocalDate.now()))
                 throw new InvalidDateException();
             this.dateOfAdmission = dateOfAdmission;
+            logger.info("Date of admission was set");
         } catch (NullDataException e) {
+            logger.warn("Date of admission was not provided");
             System.out.println("Admission date was not provided. Please provide the admission date.");
             while (true) {
                 try {
@@ -72,16 +82,21 @@ public final class Patient extends Person implements Information {
                     if (LocalDate.parse(date).isAfter(LocalDate.now()))
                         throw new InvalidDateException();
                     this.dateOfAdmission = LocalDate.parse(date);
+                    logger.info("Date of admission was set");
                     break;
                 } catch (NullDataException ex) {
+                    logger.warn("Date of admission was not provided");
                     System.out.println("Admission date was not provided. Please provide the admission date.");
                 } catch (IllegalArgumentException ex) {
+                    logger.warn("Incorrect date of admission was provided");
                     System.out.println("Incorrect date was provided. Please provide the admission date in the correct form.");
                 } catch (InvalidDateException ex) {
+                    logger.warn("Invalid date of admission was provided");
                     System.out.println("Admission date provided is after the current date. Please provide a valid admission date.");
                 }
             }
         } catch (IllegalArgumentException e) {
+            logger.warn("Incorrect date of admission was provided");
             System.out.println("Admission date was not given in correct form. Please provide a valid admission date.");
             while (true) {
                 try {
@@ -94,12 +109,16 @@ public final class Patient extends Person implements Information {
                     if (LocalDate.parse(date).isAfter(LocalDate.now()))
                         throw new InvalidDateException();
                     this.dateOfAdmission = LocalDate.parse(date);
+                    logger.info("Date of admission was set");
                     break;
                 } catch (NullDataException ex) {
+                    logger.warn("Date of admission was not provided");
                     System.out.println("Admission date was not provided. Please provide the admission date.");
                 } catch (IllegalArgumentException ex) {
+                    logger.warn("Incorrect date of admission was provided");
                     System.out.println("Incorrect date was provided. Please provide the admission date in the correct form.");
                 } catch (InvalidDateException ex) {
+                    logger.warn("Invalid date of admission was provided");
                     System.out.println("Admission date provided is after the current date. Please provide a valid admission date.");
                 }
             }
@@ -116,12 +135,16 @@ public final class Patient extends Person implements Information {
                     if (LocalDate.parse(date).isAfter(LocalDate.now()))
                         throw new InvalidDateException();
                     this.dateOfAdmission = LocalDate.parse(date);
+                    logger.info("Date of admission was set");
                     break;
                 } catch (NullDataException ex) {
+                    logger.warn("Date of admission was not provided");
                     System.out.println("Admission date was not provided. Please provide the admission date.");
                 } catch (IllegalArgumentException ex) {
+                    logger.warn("Incorrect date of admission was provided");
                     System.out.println("Incorrect date was provided. Please provide the admission date in the correct form.");
                 } catch (InvalidDateException ex) {
+                    logger.warn("Invalid date of admission was provided");
                     System.out.println("Admission date provided is after the current date. Please provide a valid admission date.");
                 }
             }
@@ -130,7 +153,7 @@ public final class Patient extends Person implements Information {
 
     public void setTimeOfAdmission(LocalTime time) {
         this.timeOfAdmission = time;
-    } // fix exception later
+    }
 
     public void setBill(Bill bill) {
         this.bill = bill;
@@ -145,15 +168,18 @@ public final class Patient extends Person implements Information {
             if (visitorList.size() == MAX_VISITORS)
                 throw new ExceedCapacityException();
             visitorList.add(visitor);
+            logger.info("Visitor was admitted to see a patient");
             System.out.println("You may proceed, " + visitor.getFirstName());
         }
         catch (ExceedCapacityException e) {
+            logger.info("Patient's visitor list is full");
             System.out.println("Sorry, the patient has the maximum number of visitors visiting at this time. Please come back later or try again tomorrow.");
         }
     }
 
     public void removeVisitor(Visitor visitor) {
         visitorList.remove(visitor);
+        logger.info("Visitor removed");
     }
 
     @Override

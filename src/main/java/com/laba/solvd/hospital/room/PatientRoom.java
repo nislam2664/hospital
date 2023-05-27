@@ -5,14 +5,24 @@ import com.laba.solvd.collection.*;
 import com.laba.solvd.exception.ExceedCapacityException;
 import com.laba.solvd.hospital.patient.*;
 import com.laba.solvd.interfaces.*;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.Objects;
 
 public final class PatientRoom extends Room implements Information, RoomService {
+    private static final Logger logger = LogManager.getLogger(PatientRoom.class.getName());
+
     private final GenericLinkedList<Patient> patientBeds = new GenericLinkedList<Patient>();
 
     public PatientRoom(int floorNumber, int roomNumber, int maxCapacity) {
         super(floorNumber, roomNumber, maxCapacity);
+        logger.debug("Patient room object instantiated");
+        logger.info("Patient room object created");
+    }
+
+    public GenericLinkedList<Patient> getPatientBeds() {
+        return patientBeds;
     }
 
     @Override
@@ -21,9 +31,11 @@ public final class PatientRoom extends Room implements Information, RoomService 
             if (patientBeds.size() == this.getMaxCapacity())
                 throw new ExceedCapacityException();
             patientBeds.add(patient);
+            logger.info("Patient added to patient room");
             System.out.println("Patient has been admitted into this room");
         }
         catch (ExceedCapacityException e) {
+            logger.warn("Patient room is full");
             System.out.println("This room is currently full.");
         }
     }

@@ -4,6 +4,8 @@ import com.laba.solvd.category.*;
 import com.laba.solvd.exception.ExceedCapacityException;
 import com.laba.solvd.hospital.patient.*;
 import com.laba.solvd.interfaces.*;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
@@ -13,10 +15,14 @@ import java.util.PriorityQueue;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public final class EmergencyRoom extends Room implements Information, RoomService {
+    private static final Logger logger = LogManager.getLogger(EmergencyRoom.class.getName());
+
     private final PriorityQueue<Patient> emergencyQueue  = new PriorityQueue<>((p1, p2) -> Integer.compare((p1.getTimeOfAdmission()).compareTo(p2.getTimeOfAdmission()), 0));
 
     public EmergencyRoom(int floorNumber, int maxCapacity) {
         super(floorNumber, 1, maxCapacity);
+        logger.debug("Emergency room object instantiated");
+        logger.info("Emergency room object created");
     }
 
     public PriorityQueue<Patient> getEmergencyQueue() {
@@ -30,9 +36,11 @@ public final class EmergencyRoom extends Room implements Information, RoomServic
                 throw new ExceedCapacityException();
             patient.setTimeOfAdmission(LocalTime.now());
             emergencyQueue.add(patient);
+            logger.info("Patient added to emergency room queue");
             System.out.println("Patient has been added to the emergency room queue");
         }
         catch (ExceedCapacityException e) {
+            logger.warn("Emergency room queue is full");
             System.out.println("The queue for this emergency room is currently full.");
         }
     }

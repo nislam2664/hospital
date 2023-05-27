@@ -6,6 +6,8 @@ import com.laba.solvd.enums.JobTitle;
 import com.laba.solvd.exception.*;
 import com.laba.solvd.hospital.patient.*;
 import com.laba.solvd.interfaces.*;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -13,11 +15,15 @@ import java.util.Objects;
 import java.util.Scanner;
 
 public class Nurse extends Staff implements Information {
+    private static final Logger logger = LogManager.getLogger(Nurse.class.getName());
+
     private final int MAX_PATIENTS = 10;
     private final ArrayList<Patient> patientList = new ArrayList<>();
 
     public Nurse(String fullName, LocalDate DOB, Gender gender, LocalDate joinDate) {
         super(fullName, DOB, gender, JobTitle.NURSE, joinDate);
+        logger.debug("Nurse object instantiated");
+        logger.info("Nurse object created");
     }
 
     public ArrayList<Patient> getPatientList() {
@@ -29,9 +35,11 @@ public class Nurse extends Staff implements Information {
             if (patientList.size() == MAX_PATIENTS)
                 throw new ExceedCapacityException();
             patientList.add(patient);
+            logger.info("Patient was added to nurse's list");
             System.out.println("A new patient has been assigned under Nurse " + getLastName() + "'s care.");
         }
         catch (ExceedCapacityException e) {
+            logger.warn("Nurse's patient list is full");
             System.out.println("Nurse " + getLastName() + " has currently maximum number of patients under their care.");
         }
     }

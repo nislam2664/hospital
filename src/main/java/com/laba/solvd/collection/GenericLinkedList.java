@@ -1,13 +1,18 @@
 package com.laba.solvd.collection;
 
+import com.laba.solvd.Main;
 import com.laba.solvd.exception.NegativeNumberException;
 import com.laba.solvd.interfaces.*;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class  GenericLinkedList<T> implements List<T>, Information {
+    private static final Logger logger = LogManager.getLogger(Main.class.getName());
+
     private Node head;
     private int size;
 
@@ -16,6 +21,7 @@ public class  GenericLinkedList<T> implements List<T>, Information {
         Node next;
 
         public Node(T data) {
+            logger.debug("Node instantiated");
             this.data = data;
             this.next = null;
         }

@@ -1,6 +1,12 @@
 package com.laba.solvd.thread;
 
+import com.laba.solvd.hospital.staff.Nurse;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 public class MultiThread {
+    private static final Logger logger = LogManager.getLogger(MultiThread.class.getName());
+
     /*
     Create 2 Threads using Runnable and Thread. done?
 
@@ -16,8 +22,8 @@ public class MultiThread {
     */
     public static void main(String[] args) {
 
-        Thread threadA = new Thread(new RunnableThread(1));
-        MyThread threadB = new MyThread(2);
+        Thread threadA = new Thread(new RunnableThread(1), "thread1");
+        MyThread threadB = new MyThread();
 
         threadA.start();
         threadB.start();

@@ -1,9 +1,12 @@
 package com.laba.solvd.hospital.room;
 
+import com.laba.solvd.Main;
 import com.laba.solvd.category.*;
 import com.laba.solvd.exception.ExceedCapacityException;
 import com.laba.solvd.hospital.patient.*;
 import com.laba.solvd.interfaces.*;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.time.LocalTime;
 import java.util.Comparator;
@@ -12,7 +15,9 @@ import java.util.PriorityQueue;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public final class WaitingRoom extends Room implements Information, RoomService {
-    private PriorityQueue<Patient> waitingQueue;
+    private static final Logger logger = LogManager.getLogger(WaitingRoom.class.getName());
+
+    private final PriorityQueue<Patient> waitingQueue;
 
     public WaitingRoom(int floorNumber, int maxCapacity) {
         super(floorNumber, 0, maxCapacity);
@@ -30,9 +35,11 @@ public final class WaitingRoom extends Room implements Information, RoomService 
                 throw new ExceedCapacityException();
             patient.setTimeOfAdmission(LocalTime.now());
             waitingQueue.add(patient);
+            logger.info("Patient added to waiting room");
             System.out.println("Patient has been admitted to the waiting room.");
         }
         catch (ExceedCapacityException e) {
+            logger.warn("Waiting room is full");
             System.out.println("The waiting room is currently full.");
         }
     }

@@ -2,23 +2,31 @@ package com.laba.solvd.hospital;
 
 import com.laba.solvd.category.*;
 import com.laba.solvd.collection.GenericLinkedList;
+import com.laba.solvd.enums.JobTitle;
 import com.laba.solvd.exception.*;
 import com.laba.solvd.hospital.patient.Patient;
 import com.laba.solvd.interfaces.*;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class Hospital implements Information, PopulationCount, Transfer {
+    public static final Logger logger = LogManager.getLogger(Hospital.class.getName());
+
     private Contact contact;
     private final GenericLinkedList<Department> departmentList = new GenericLinkedList<>();
 
     public Hospital() {
-
+        logger.debug("Hospital object instantiated");
+        logger.warn("Hospital was not given any information");
     }
 
     public Hospital(String name, String address, String phone) {
+        logger.debug("Hospital object instantiated");
         contact = new Contact(name, address, phone);
+        logger.info("Hospital object created");
     }
 
     public Contact getContact() {
@@ -26,10 +34,7 @@ public class Hospital implements Information, PopulationCount, Transfer {
     }
 
     public Department getDepartment(String deptName) {
-        for (Department dept : departmentList)
-            if (dept.getName().getLabel().equals(deptName))
-                return dept;
-        return null;
+        return departmentList.stream().filter(dept -> dept.getName().getLabel().equals(deptName)).findFirst().orElse(null);
     }
 
     public GenericLinkedList<Department> getDepartmentList() throws NoDepartmentsException {
@@ -44,10 +49,12 @@ public class Hospital implements Information, PopulationCount, Transfer {
 
     public void addDepartment(Department dept) {
         departmentList.add(dept);
+        logger.info(dept.getName() + " added");
     }
 
     public void removeDepartment(Department dept) {
         departmentList.remove(dept);
+        logger.info(dept.getName() + " removed");
     }
 
     @Override
@@ -66,22 +73,18 @@ public class Hospital implements Information, PopulationCount, Transfer {
     }
 
     @Override
+    public int numOfStaff(JobTitle title) {
+        return departmentList.stream().mapToInt(dept -> dept.numOfStaff(title)).sum();
+    }
+
+    @Override
     public int numOfStaff(String title) {
-        AtomicInteger staffMembers = new AtomicInteger();
-        departmentList.stream().forEach(dept -> {
-            dept.getStaffList().stream().forEach(staff -> {
-                if (staff.getTitle().getLabel().equals(title))
-                    staffMembers.getAndIncrement();
-            });
-        });
-        return staffMembers.get();
+        return departmentList.stream().mapToInt(dept -> dept.numOfStaff(title)).sum();
     }
 
     @Override
     public int numOfRooms() {
-        AtomicInteger rooms = new AtomicInteger();
-        departmentList.stream().forEach(dept -> rooms.addAndGet(dept.getRoomList().size()));
-        return rooms.get();
+        return departmentList.stream().mapToInt(dept -> dept.getRoomList().size()).sum();
     }
 
     @Override
@@ -91,6 +94,7 @@ public class Hospital implements Information, PopulationCount, Transfer {
                 dpt.removeStaff(staff);
         });
         this.getDepartment(dept.getName().getLabel()).addStaff(staff);
+        logger.info("Staff " + staff.getContact().getName() + " moved to " + dept.getName());
     }
 
     @Override
@@ -100,6 +104,7 @@ public class Hospital implements Information, PopulationCount, Transfer {
                 dpt.removePatient(patient);
         });
         this.getDepartment(dept.getName().getLabel()).addPatient(patient);
+        logger.info("Patient " + patient.getContact().getName() + " moved to " + dept.getName());
     }
 
     @Override

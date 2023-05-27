@@ -5,6 +5,8 @@ import com.laba.solvd.enums.Gender;
 import com.laba.solvd.enums.JobTitle;
 import com.laba.solvd.exception.FullNameNotGivenException;
 import com.laba.solvd.interfaces.*;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -12,10 +14,14 @@ import java.util.Objects;
 import java.util.Scanner;
 
 public class Interpreter extends Staff implements Information {
+    private static final Logger logger = LogManager.getLogger(Interpreter.class.getName());
+
     private final ArrayList<String> languages = new ArrayList<String>();
 
     public Interpreter(String fullName, LocalDate DOB, Gender gender, LocalDate joinDate) {
         super(fullName, DOB, gender, JobTitle.INTERPRETER, joinDate);
+        logger.debug("Interpreter object instantiated");
+        logger.info("Interpreter object created");
     }
 
     public ArrayList<String> getLanguages() {

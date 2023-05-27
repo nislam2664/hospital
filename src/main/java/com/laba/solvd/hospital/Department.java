@@ -6,12 +6,16 @@ import com.laba.solvd.exception.*;
 import com.laba.solvd.hospital.patient.*;
 import com.laba.solvd.interfaces.*;
 import com.laba.solvd.tool.StringManipulation;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 public class Department implements Information, PopulationCount, Transfer {
+    private static final Logger logger = LogManager.getLogger(Department.class.getName());
+
     private DeptName name;
     private int id;
     private final ArrayList<Staff> staffList = new ArrayList<>();
@@ -19,12 +23,15 @@ public class Department implements Information, PopulationCount, Transfer {
     private final ArrayList<Room> roomList = new ArrayList<>();
 
     public Department() {
-
+        logger.debug("Department object instantiated");
+        logger.warn("Department was not given any information");
     }
 
     public Department(DeptName name, int id) {
+        logger.debug("Department object instantiated");
         setName(name);
         setId(id);
+        logger.info("Department object created");
     }
 
     public DeptName getName() {
@@ -53,16 +60,20 @@ public class Department implements Information, PopulationCount, Transfer {
             if(name == null)
                 throw new NullDataException();
             this.name = name;
+            logger.info("Name provided successfully");
         } catch (NullDataException e) {
+            logger.warn("Name was not established");
             System.out.println("Department name was not established. Please provide a valid department name.\n{ANESTHESIOLOGY, CARDIOLOGY, DENTISTRY, DERMATOLOGY, ENDOCRINOLOGY, FAMILY MEDICINE, GASTROENTEROLOGY, INFECTIOUS DISEASE, NEUROLOGY, NEUROSURGERY, OPHTHALMOLOGY, ORTHOPAEDICS, PRIMARY CARE, PSYCHOLOGY, RADIOLOGY, RHEUMATOLOGY, UROLOGY}.");
             while (true) {
                 System.out.print("Department name : ");
                 String label = scanner.nextLine();
                 try {
                     this.name = DeptName.valueOf(label.toUpperCase());
+                    logger.info("Name provided successfully");
                     break;
                 } catch (IllegalArgumentException ex) {
-                    System.out.println("Department name was not established. Please provide a valid department name.\n{ANESTHESIOLOGY, CARDIOLOGY, DENTISTRY, DERMATOLOGY, ENDOCRINOLOGY, FAMILY MEDICINE, GASTROENTEROLOGY, INFECTIOUS DISEASE, NEUROLOGY, NEUROSURGERY, OPHTHALMOLOGY, ORTHOPAEDICS, PRIMARY CARE, PSYCHOLOGY, RADIOLOGY, RHEUMATOLOGY, UROLOGY}.");
+                    logger.warn("Invalid department name");
+                    System.out.println("Department name given does not exist. Please provide a valid department name.\n{ANESTHESIOLOGY, CARDIOLOGY, DENTISTRY, DERMATOLOGY, ENDOCRINOLOGY, FAMILY MEDICINE, GASTROENTEROLOGY, INFECTIOUS DISEASE, NEUROLOGY, NEUROSURGERY, OPHTHALMOLOGY, ORTHOPAEDICS, PRIMARY CARE, PSYCHOLOGY, RADIOLOGY, RHEUMATOLOGY, UROLOGY}.");
                 }
             }
         }
@@ -74,8 +85,10 @@ public class Department implements Information, PopulationCount, Transfer {
             if (id <= 0)
                 throw new NegativeNumberException();
             this.id = id;
+            logger.info("ID provided successfully");
         }
         catch (NegativeNumberException e) {
+            logger.warn("Negative ID provided");
             System.out.print("ID cannot be negative.\nPlease enter a valid ID : ");
             while(true) {
                 try {
@@ -87,12 +100,15 @@ public class Department implements Information, PopulationCount, Transfer {
                     this.id = Integer.parseInt(num);
                     break;
                 } catch (NegativeNumberException ex) {
+                    logger.warn("Negative ID provided");
                     System.out.print("ID cannot be negative.\nPlease enter a valid ID : ");
                 } catch (InputMismatchException ex) {
+                    logger.warn("Invalid ID provided");
                     System.out.print("Invalid ID number input.\nPlease enter a valid ID : ");
                 }
             }
         } catch (InputMismatchException e) {
+            logger.warn("Invalid ID provided");
             System.out.print("Invalid ID number input.\nPlease enter a valid ID : ");
             while(true) {
                 try {
@@ -104,8 +120,10 @@ public class Department implements Information, PopulationCount, Transfer {
                     this.id = Integer.parseInt(num);
                     break;
                 } catch (NegativeNumberException ex) {
+                    logger.warn("Negative ID provided");
                     System.out.print("ID cannot be negative.\nPlease enter a valid ID : ");
                 } catch (InputMismatchException ex) {
+                    logger.warn("Invalid ID provided");
                     System.out.print("Invalid ID number input.\nPlease enter a valid ID : ");
                 }
             }
@@ -194,23 +212,14 @@ public class Department implements Information, PopulationCount, Transfer {
         return staffList.size();
     }
 
+    @Override
     public int numOfStaff(JobTitle title) {
-        AtomicInteger num = new AtomicInteger(0);
-        staffList.stream().forEach(staff -> {
-            if(staff.getTitle().equals(title))
-                num.getAndIncrement();
-        });
-        return num.get();
+        return (int)(staffList.stream().filter(staff -> staff.getTitle().equals(title)).count());
     }
 
     @Override
     public int numOfStaff(String title) {
-        AtomicInteger num = new AtomicInteger(0);
-        staffList.stream().forEach(staff -> {
-            if(staff.getTitle().getLabel().equals(title.toUpperCase()))
-                num.getAndIncrement();
-        });
-        return num.get();
+        return (int)(staffList.stream().filter(staff -> staff.getTitle().getLabel().equals(title.toUpperCase())).count());
     }
 
     @Override
@@ -223,6 +232,7 @@ public class Department implements Information, PopulationCount, Transfer {
         if(this.getStaffList().contains(staff))
             this.removeStaff(staff);
         dept.addStaff(staff);
+        logger.info("Staff " + staff.getContact().getName() + " moved to " + dept.getName());
     }
 
     @Override
@@ -230,6 +240,7 @@ public class Department implements Information, PopulationCount, Transfer {
         if(this.getPatientList().contains(patient))
             this.removePatient(patient);
         dept.addPatient(patient);
+        logger.info("Patient " + patient.getContact().getName() + " moved to " + dept.getName());
     }
 
     @Override
