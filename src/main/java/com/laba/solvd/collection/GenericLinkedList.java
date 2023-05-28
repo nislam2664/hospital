@@ -9,6 +9,8 @@ import org.apache.logging.log4j.Logger;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 public class  GenericLinkedList<T> implements List<T>, Information {
     private static final Logger logger = LogManager.getLogger(Main.class.getName());
@@ -24,6 +26,10 @@ public class  GenericLinkedList<T> implements List<T>, Information {
             logger.debug("Node instantiated");
             this.data = data;
             this.next = null;
+        }
+
+        public Node getNext() {
+            return next;
         }
     }
 
@@ -73,15 +79,8 @@ public class  GenericLinkedList<T> implements List<T>, Information {
 
     @Override
     public Object[] toArray() {
-        Object[] arr = new Object[size];
-        Node curr = head;
-
-        for(int i = 0; i < size; i++) {
-            arr[i] = curr.data;
-            curr = curr.next;
-        }
-
-        return arr;
+        final Node curr = head;
+        return Stream.iterate(curr, Node::getNext).limit(size).toArray();
     }
 
     @Override

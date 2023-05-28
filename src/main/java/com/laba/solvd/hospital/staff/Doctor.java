@@ -4,7 +4,6 @@ import com.laba.solvd.category.*;
 import com.laba.solvd.enums.Gender;
 import com.laba.solvd.enums.JobTitle;
 import com.laba.solvd.exception.*;
-import com.laba.solvd.hospital.room.WaitingRoom;
 import com.laba.solvd.interfaces.*;
 import com.laba.solvd.tool.StringManipulation;
 import org.apache.logging.log4j.LogManager;
@@ -16,10 +15,11 @@ import java.util.InputMismatchException;
 import java.util.Objects;
 import java.util.Scanner;
 
-public class Doctor extends Staff implements Information {
+public class Doctor extends Staff implements Information, Runnable {
     private static final Logger logger = LogManager.getLogger(Doctor.class.getName());
 
     private float fee;
+    private volatile boolean busy = true;
 
     public Doctor(String fullName, LocalDate DOB, Gender gender, LocalDate joinDate, float fee) {
         super(fullName, DOB, gender, JobTitle.DOCTOR, joinDate);
@@ -30,6 +30,10 @@ public class Doctor extends Staff implements Information {
 
     public float getFee() {
         return fee;
+    }
+
+    public boolean getIfBusy() {
+        return busy;
     }
 
     public void setFee(float fee)  {
@@ -85,6 +89,10 @@ public class Doctor extends Staff implements Information {
         }
     }
 
+    public void setIfBusy(boolean busy) {
+        this.busy = busy;
+    }
+
     @Override
     public void getInfo() {
         System.out.println("✦✦✦ Doctor ✦✦✦");
@@ -112,5 +120,17 @@ public class Doctor extends Staff implements Information {
     @Override
     public int hashCode() {
         return Objects.hash(super.hashCode(), fee);
+    }
+
+    @Override
+    public void run() {
+        try {
+            System.out.println("Thread started ::: " + Thread.currentThread().getName());
+            Thread.sleep(5000);
+            busy = false;
+            System.out.println("Thread ended ::: " + Thread.currentThread().getName());
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

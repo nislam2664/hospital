@@ -13,8 +13,10 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Objects;
 import java.util.Scanner;
+import java.util.concurrent.ThreadLocalRandom;
+import java.util.stream.Stream;
 
-public final class Patient extends Person implements Information {
+public final class Patient extends Person implements Information, Runnable {
     private static final Logger logger = LogManager.getLogger(Patient.class.getName());
 
     private final int MAX_VISITORS = 2;
@@ -24,11 +26,10 @@ public final class Patient extends Person implements Information {
     private MedicalRecord medicalRecord = new MedicalRecord();
     private final ArrayList<Visitor> visitorList = new ArrayList<>();
     public static int patients;
+    private volatile boolean seen = false;
 
     static {
         patients = 0;
-        logger.debug("Patient object instantiated");
-        logger.warn("Patient was not given any information");
     }
 
     public Patient(String fullName, LocalDate DOB, Gender gender) {
@@ -57,6 +58,10 @@ public final class Patient extends Person implements Information {
 
     public ArrayList<Visitor> getVisitorList() {
         return visitorList;
+    }
+
+    public boolean getIfSeen() {
+        return seen;
     }
 
     public void setDateOfAdmission(LocalDate dateOfAdmission) {
@@ -163,6 +168,10 @@ public final class Patient extends Person implements Information {
         this.medicalRecord = medicalRecord;
     }
 
+    public void setIfSeen(boolean seen) {
+        this.seen = seen;
+    }
+
     public void addVisitor(Visitor visitor) {
         try {
             if (visitorList.size() == MAX_VISITORS)
@@ -213,6 +222,17 @@ public final class Patient extends Person implements Information {
     @Override
     public int hashCode() {
         return Objects.hash(super.hashCode(), dateOfAdmission, bill, medicalRecord, visitorList);
+    }
+
+    @Override
+    public void run() {
+        try {
+            System.out.println("Thread started ::: " + Thread.currentThread().getName());
+            Thread.sleep(1000);
+            System.out.println("Thread ended ::: " + Thread.currentThread().getName());
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
 

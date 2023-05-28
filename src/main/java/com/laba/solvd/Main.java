@@ -1,6 +1,7 @@
 package com.laba.solvd;
 
 import com.laba.solvd.category.*;
+import com.laba.solvd.collection.GenericLinkedList;
 import com.laba.solvd.enums.*;
 import com.laba.solvd.hospital.*;
 import com.laba.solvd.hospital.patient.*;
@@ -14,7 +15,10 @@ import org.apache.logging.log4j.Logger;
 import java.text.NumberFormat;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.Arrays;
 import java.util.function.*;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 public class Main {
     private static final Logger logger = LogManager.getLogger(Main.class.getName());
@@ -34,7 +38,7 @@ public class Main {
         FileReader.fileReader();
 
         // HOSPITAL SIMULATION
-        Hospital hospital = new Hospital("Green Hill Hospital", "106-05 Pennsylvania Ave., Franklin Square, NY 11010", "347-445-3124");
+        Hospital hospital = new Hospital("green hill hospital", "106-05 Pennsylvania Ave., Franklin Square, NY 11010", "347-445-3124");
 
         Department dept = new Department(DeptName.RADIOLOGY, 12345678);
         hospital.addDepartment(dept);
@@ -49,7 +53,7 @@ public class Main {
         Bill bill = new Bill(123, 99, "private");
         bill.getInfo();
 
-        Doctor d1 = new Doctor("Amish Patel", LocalDate.parse("1990-06-13"), Gender.MALE, LocalDate.now(), 45);
+        Doctor d1 = new Doctor("amish patel", LocalDate.parse("1990-06-13"), Gender.MALE, LocalDate.now(), 45);
         d1.getInfo();
         Doctor d2 = new Doctor("Anya Forger", LocalDate.parse("1990-06-13"), Gender.FEMALE, LocalDate.now(), 60);
         d2.getInfo();
@@ -57,11 +61,11 @@ public class Main {
         d3.getInfo();
 
         Nurse n1 = new Nurse("Hannah Montana", LocalDate.parse("1990-06-13"), Gender.FEMALE, LocalDate.now());
-      //  n1.addPatient(new Patient("Miranda Govenchi", LocalDate.parse("2019-02-23"), Gender.FEMALE));
+        n1.addPatient(new Patient("Miranda Govenchi", LocalDate.parse("2019-02-23"), Gender.FEMALE));
         n1.getInfo();
         System.out.println(n1.getDOB());
         Nurse n2 = new Nurse("Pippi Longstocking", LocalDate.parse("1990-06-13"), Gender.FEMALE, LocalDate.now());
-      //  n2.addPatient(new Patient("Toby MacGuire", LocalDate.parse("1990-06-13"), Gender.MALE));
+        n2.addPatient(new Patient("Toby MacGuire", LocalDate.parse("1990-06-13"), Gender.MALE));
         n2.getInfo();
 
         Interpreter i1 = new Interpreter("John Doe", LocalDate.parse("1990-06-13"), Gender.MALE, LocalDate.now());

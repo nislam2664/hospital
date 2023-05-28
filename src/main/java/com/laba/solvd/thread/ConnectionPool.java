@@ -1,29 +1,40 @@
 package com.laba.solvd.thread;
 
 import java.util.concurrent.*;
+import java.util.stream.IntStream;
 
 public class ConnectionPool {
     private final int POOL_SIZE = 5;
-    private final BlockingQueue<Connect> connectionPool = new LinkedBlockingQueue<>(POOL_SIZE);
+    private final BlockingQueue<Thread> connectionPool;
+    private static ConnectionPool instance;
 
     private ConnectionPool() {
-        initialize();
+        connectionPool = new ArrayBlockingQueue<>(POOL_SIZE);
+        IntStream.range(0, 5).forEach(i -> addConnection(new Thread()));
     }
 
-    public void initialize() {
-        for (int i = 0; i < POOL_SIZE; i++)
-            connectionPool.add(createConnection());
+    public static synchronized ConnectionPool getInstance() {
+        // lazy initialization
+        if (instance == null)
+            instance = new ConnectionPool();
+        return instance;
     }
 
-    public Connect createConnection() {
-        return new Connect();
+    public Thread top() {
+        return connectionPool.peek();
     }
 
-    public Connect getConnection() throws InterruptedException {
-        return connectionPool.take();
+    public synchronized void addConnection(Thread thread) {
+        boolean offered = connectionPool.offer(thread);
     }
 
-    public boolean giveConnection(Connect conn) {
-        return connectionPool.offer(conn);
+    public synchronized void removeConnection() {
+        try {
+            assert connectionPool.peek() != null;
+            if (!connectionPool.peek().isAlive())
+                connectionPool.take();
+        } catch (InterruptedException e) {
+            System.out.println("Current thread has been interrupted!");
+        }
     }
 }
